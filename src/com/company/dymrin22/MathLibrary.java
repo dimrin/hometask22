@@ -1,25 +1,36 @@
 package com.company.dymrin22;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public final class MathLibrary {
 
 
-    public int[] getValuesFromArray(int[] array) {
-        if (IntStream.of(array).noneMatch(x -> x == 4)) {
-            throw new RuntimeException();
+    public static int[] getValuesAfterFourFromArray(int[] array) {
+        if (array == null || array.length == 0) {
+            throw new RuntimeException("Inbound array cannot be null nor empty.");
         }
-        return Arrays.copyOfRange(array, Arrays.stream(array).boxed().toList().lastIndexOf(4) + 1, array.length - 1);
+        int index = -1;
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == 4) index = i;
+        }
+
+        if (index == -1) {
+            throw new RuntimeException("Inbound array must contain one 4-digit at least.");
+        }
+
+        int[] newDigits = new int[array.length - index - 1];
+        System.arraycopy(array, index + 1, newDigits, 0, newDigits.length);
+
+        return newDigits;
     }
 
 
-    public boolean arrayChecking(int[] array) {
-        if (IntStream.of(array).anyMatch(x -> x == 4) && IntStream.of(array).anyMatch(x -> x == 1)) {
-            System.out.println(Arrays.toString(array) + "->" + true);
-            return true;
+    public static boolean checkArrayForOneAndFour(int[] array) {
+        if (array == null || array.length == 0) {
+            throw new RuntimeException("Inbound array cannot be null nor empty.");
         }
-        System.out.println(Arrays.toString(array) + "->" + false);
-        return false;
+
+        return IntStream.of(array).anyMatch(x -> x == 4) && IntStream.of(array).anyMatch(x -> x == 1);
     }
 }
